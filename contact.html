@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Mohammed Sahm</title>
+    <link rel="stylesheet" href="css/locomotive-scroll.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">Mohammed Sahm</a>
+        <div class="nav-links">
+            <a href="about.html" class="nav-link">About</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container" data-scroll-container>
+        <section data-bgcolor="#032f35" data-textcolor="#ffffff" class="hero-section">
+            <div class="hero-text">
+                <h1 data-scroll data-scroll-speed="3"><i class="fas fa-envelope"></i> Get in Touch</h1>
+                <p class="hero-description" data-scroll data-scroll-speed="2">
+                    Let's connect and create something amazing together
+                </p>
+            </div>
+        </section>
+
+        <section data-bgcolor="#bcb8ad" data-textcolor="#032f35">
+            <h2 data-scroll data-scroll-speed="2"><i class="fas fa-address-card"></i> Contact Information</h2>
+            <div class="services-grid">
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> Charlottetown, PE, Canada</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-at"></i> Email & Phone</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> <a href="mailto:mhsahm324@gmail.com">mhsahm324@gmail.com</a></li>
+                        <li><i class="fas fa-check"></i> +1 (902) 393-5117</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-globe"></i> Professional Profiles</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> <a href="www.linkedin.com/in/sahm-mohammed/" target="_blank">LinkedIn Profile</a></li>
+                        <li><i class="fas fa-check"></i> <a href="https://github.com/M-Sahmm" target="_blank">GitHub Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section data-bgcolor="#e3857a" data-textcolor="#ffffff">
+            <div class="contact-container">
+                <div class="contact-form" data-scroll data-scroll-speed="1">
+                    <form action="https://formspree.io/f/mrbpzezq" method="POST" id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" required placeholder=" ">
+                            <label for="name">Your Name</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" required placeholder=" ">
+                            <label for="email">Your Email</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
+                            <label for="message">Share your thoughts</label>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">SEND MESSAGE</button>
+                        <div id="form-status" style="display: none;"></div>
+                    </form>
+                </div>
+
+                <div class="contact-info" data-scroll data-scroll-speed="2">
+                    <h2>Get in touch with me :)</h2>
+                    <p>I am open to new opportunities and collaborations, feel free to just shoot me a text/email!</p>
+                </div>
+            </div>
+        </section>
+
+        <section data-bgcolor="#536fae" data-textcolor="#ffffff" class="testimonial-section">
+            <div class="testimonial-content" data-scroll data-scroll-speed="2">
+                <div class="testimonial-text">
+                    "Let's collaborate and bring ideas to life!"
+                </div>
+                <div class="testimonial-author">
+                    - Get in Touch
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const scroller = new LocomotiveScroll({
+            el: document.querySelector("[data-scroll-container]"),
+            smooth: true
+        });
+
+        scroller.on("scroll", ScrollTrigger.update);
+
+        ScrollTrigger.scrollerProxy("[data-scroll-container]", {
+            scrollTop(value) {
+                return arguments.length
+                    ? scroller.scrollTo(value, 0, 0)
+                    : scroller.scroll.instance.scroll.y;
+            },
+            getBoundingClientRect() {
+                return {
+                    left: 0,
+                    top: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+            }
+        });
+
+        ScrollTrigger.addEventListener("refresh", () => scroller.update());
+        ScrollTrigger.refresh();
+
+        window.addEventListener("load", function () {
+            const scrollColorElems = document.querySelectorAll("[data-bgcolor]");
+            scrollColorElems.forEach((colorSection, i) => {
+                const prevBg = i === 0 ? "" : scrollColorElems[i - 1].dataset.bgcolor;
+                const prevText = i === 0 ? "" : scrollColorElems[i - 1].dataset.textcolor;
+
+                ScrollTrigger.create({
+                    trigger: colorSection,
+                    scroller: "[data-scroll-container]",
+                    start: "top 50%",
+                    onEnter: () =>
+                        gsap.to("body", {
+                            backgroundColor: colorSection.dataset.bgcolor,
+                            color: colorSection.dataset.textcolor,
+                            overwrite: "auto"
+                        }),
+                    onLeaveBack: () =>
+                        gsap.to("body", {
+                            backgroundColor: prevBg,
+                            color: prevText,
+                            overwrite: "auto"
+                        })
+                });
+            });
+        });
+    </script>
+    <script>
+        var form = document.getElementById("contact-form");
+        var formStatus = document.getElementById("form-status");
+        
+        async function handleSubmit(event) {
+            event.preventDefault();
+            var status = formStatus;
+            var data = new FormData(event.target);
+            
+            try {
+                const response = await fetch(event.target.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const json = await response.json();
+                
+                if (response.ok) {
+                    status.innerHTML = "Thanks for your message! I'll get back to you soon.";
+                    status.style.color = "#4CAF50";
+                    form.reset();
+                } else {
+                    status.innerHTML = "Oops! There was a problem submitting your form. Please try again.";
+                    status.style.color = "#f44336";
+                }
+            } catch (error) {
+                status.innerHTML = "Oops! There was a problem submitting your form. Please try again.";
+                status.style.color = "#f44336";
+            }
+            
+            status.style.display = "block";
+            setTimeout(() => {
+                status.style.display = "none";
+            }, 5000);
+        }
+        
+        form.addEventListener("submit", handleSubmit);
+    </script>
+</body>
+</html>

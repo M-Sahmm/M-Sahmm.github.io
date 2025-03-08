@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Mohammed Sahm</title>
+    <link rel="stylesheet" href="css/locomotive-scroll.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">Mohammed Sahm</a>
+        <div class="nav-links">
+            <a href="about.html" class="nav-link">About</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container" data-scroll-container>
+        <div class="timeline-wrapper">
+            <svg class="timeline-arrow" viewBox="0 0 100 300" preserveAspectRatio="none">
+                <path class="arrow-path" 
+                    d="M50,0 
+                       C70,100 30,200 50,300 
+                       C70,400 30,500 50,600" 
+                    stroke="var(--accent-color)" 
+                    stroke-width="2" 
+                    fill="none"/>
+                <circle class="timeline-dot education-dot" cx="50" cy="300" r="5" fill="var(--accent-color)"/>
+                <circle class="timeline-dot skills-dot" cx="50" cy="600" r="5" fill="var(--accent-color)"/>
+            </svg>
+        </div>
+
+        <section data-bgcolor="#032f35" data-textcolor="#ffffff" class="hero-section">
+            <div class="hero-text" data-scroll data-scroll-speed="5">
+                <h1><i class="fas fa-user-circle"></i> About Me</h1>
+                <p class="hero-description" data-scroll data-scroll-speed="5">
+                    A passionate software developer and data analyst with a focus on creating impactful digital solutions.
+                </p>
+            </div>
+        </section>
+
+        <section data-bgcolor="#bcb8ad" data-textcolor="#032f35" class="education-section">
+            <h2 data-scroll data-scroll-speed="2"><i class="fas fa-graduation-cap"></i> Education</h2>
+            <div class="services-grid">
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-university"></i> University of Prince Edward Island</h3>
+                    <ul>
+                        <li>Bachelor of Science in Computer Science</li>
+                        <li>Expected Graduation: 2027</li>
+                        <li>Key Courses: Data Structures & Algorithms, Systems Programming, Web Development</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section data-bgcolor="#e3857a" data-textcolor="#ffffff" class="skills-section">
+            <h2 data-scroll data-scroll-speed="2"><i class="fas fa-code"></i> Technical Skills</h2>
+            <div class="services-grid">
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-server"></i> Backend Languages</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> Python | Java | C | C++</li>
+                        <li><i class="fas fa-check"></i> Shell Scripting</li>
+                        <li><i class="fas fa-check"></i> Node.js</li>
+                        <li><i class="fas fa-check"></i> SQL | SQLite</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-database"></i> Backend Tools</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> Express.js</li>
+                        <li><i class="fas fa-check"></i> Flask | Django</li>
+                        <li><i class="fas fa-check"></i> PostgreSQL</li>
+                        <li><i class="fas fa-check"></i> MongoDB</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-paint-brush"></i> Frontend Languages</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> HTML5</li>
+                        <li><i class="fas fa-check"></i> CSS3</li>
+                        <li><i class="fas fa-check"></i> JavaScript</li>
+                        <li><i class="fas fa-check"></i> Processing</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-laptop-code"></i> Frontend Tools</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> React.js</li>
+                        <li><i class="fas fa-check"></i> GSAP</li>
+                        <li><i class="fas fa-check"></i> Bootstrap</li>
+                        <li><i class="fas fa-check"></i> Tailwind CSS</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" data-scroll data-scroll-speed="1">
+                    <h3><i class="fas fa-microchip"></i> IDEs and Technology</h3>
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> Linux/MacOS Terminal | CMD</li>
+                        <li><i class="fas fa-check"></i> IntelliJ | PyCharm | VS Code</li>
+                        <li><i class="fas fa-check"></i> Windsurf Codeium | Cursor</li>
+                        <li><i class="fas fa-check"></i> Kubernetes | Docker</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section data-bgcolor="#536fae" data-textcolor="#ffffff" class="testimonial-section">
+            <div class="testimonial-content" data-scroll data-scroll-speed="2">
+                <div class="testimonial-text">
+                    "I believe in creating technology that makes a positive impact on people's lives."
+                </div>
+                <div class="testimonial-author">
+                    - Personal Philosophy
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const scroller = new LocomotiveScroll({
+            el: document.querySelector("[data-scroll-container]"),
+            smooth: true
+        });
+
+        scroller.on("scroll", ScrollTrigger.update);
+
+        ScrollTrigger.scrollerProxy("[data-scroll-container]", {
+            scrollTop(value) {
+                return arguments.length
+                    ? scroller.scrollTo(value, 0, 0)
+                    : scroller.scroll.instance.scroll.y;
+            },
+            getBoundingClientRect() {
+                return {
+                    left: 0,
+                    top: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+            }
+        });
+
+        // Animate timeline path
+        const path = document.querySelector('.arrow-path');
+        const pathLength = path.getTotalLength();
+        
+        gsap.set(path, {
+            strokeDasharray: pathLength,
+            strokeDashoffset: pathLength
+        });
+
+        gsap.to(path, {
+            strokeDashoffset: 0,
+            duration: 2,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".container",
+                scroller: "[data-scroll-container]",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
+
+        // Animate timeline dots
+        const dots = document.querySelectorAll('.timeline-dot');
+        dots.forEach(dot => {
+            gsap.from(dot, {
+                scale: 0,
+                opacity: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: dot,
+                    scroller: "[data-scroll-container]",
+                    start: "top center",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+        ScrollTrigger.addEventListener("refresh", () => scroller.update());
+        ScrollTrigger.refresh();
+
+        window.addEventListener("load", function () {
+            const scrollColorElems = document.querySelectorAll("[data-bgcolor]");
+            scrollColorElems.forEach((colorSection, i) => {
+                const prevBg = i === 0 ? "" : scrollColorElems[i - 1].dataset.bgcolor;
+                const prevText = i === 0 ? "" : scrollColorElems[i - 1].dataset.textcolor;
+
+                ScrollTrigger.create({
+                    trigger: colorSection,
+                    scroller: "[data-scroll-container]",
+                    start: "top 50%",
+                    onEnter: () =>
+                        gsap.to("body", {
+                            backgroundColor: colorSection.dataset.bgcolor,
+                            color: colorSection.dataset.textcolor,
+                            overwrite: "auto"
+                        }),
+                    onLeaveBack: () =>
+                        gsap.to("body", {
+                            backgroundColor: prevBg,
+                            color: prevText,
+                            overwrite: "auto"
+                        })
+                });
+            });
+        });
+    </script>
+</body>
+</html>

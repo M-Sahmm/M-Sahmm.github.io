@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Avoidance Game</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #333;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            background: #666;
+            display: block;
+            margin: auto;
+        }
+        #score {
+            color: white;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        #controls {
+            color: white;
+            margin: 10px 0;
+        }
+        .btn {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: white;">Car Avoidance Game</h1>
+    <div id="score">Score: 0</div>
+    <canvas id="gameCanvas" width="300" height="500"></canvas>
+    <div id="controls">
+        <button class="btn" onclick="restartGame()">Restart</button>
+        <button class="btn" onclick="togglePause()">Pause</button>
+    </div>
+    <div id="controls" style="margin-top: 10px;">
+        Use ← → arrow keys to move
+    </div>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreElement = document.getElementById("score");
+        
+        const laneWidth = 100;
+        const car = { x: 100, y: 400, width: 40, height: 60, lane: 1 };
+        let obstacles = [];
+        let lastObstacleTime = 0;
+        let minObstacleSpacing = 180; // Increased minimum spacing
+        let minAdjacentSpacing = 100; // Minimum spacing between obstacles in adjacent lanes
+        let lastSpawnedLanes = [-1, -1]; // Keep track of last two spawned lanes
+        let lastSpawnY = 0; // Track Y position of last spawned obstacle
+        let gameOver = false;
+        let isPaused = false;
+        let score = 0;
+        let baseSpeed = 3;
+        let spawnRate = 0.02;
+        let frameCount = 0;
+        
+        function drawCar() {
+            ctx.fillStyle = "blue";
+            ctx.fillRect(car.x, car.y, car.width, car.height);
+        }
+        
+        function drawObstacles() {
+            ctx.fillStyle = "red";
+            obstacles.forEach(obstacle => {
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+        }
+        
+        function checkCollision(car, obstacle) {
+            return car.x < obstacle.x + obstacle.width &&
+                   car.x + car.width > obstacle.x &&
+                   car.y < obstacle.y + obstacle.height &&
+                   car.y + car.height > obstacle.y;
+        }
+
+        function canSpawnInLane(lane, yPosition) {
+            // Check spacing with existing obstacles in adjacent lanes
+            return obstacles.every(obstacle => {
+                // Calculate horizontal distance between lanes
+                const laneDiff = Math.abs(obstacle.x - (lane * laneWidth + 30));
+                
+                // If obstacles are in adjacent or same lanes, check vertical spacing
+                if (laneDiff <= laneWidth) {
+                    const verticalGap = Math.abs(obstacle.y - yPosition);
+                    // Require larger gap for adjacent lanes
+                    const requiredGap = laneDiff === 0 ? minObstacleSpacing : minAdjacentSpacing;
+                    return verticalGap >= requiredGap;
+                }
+                return true;
+            });
+        }
+
+        function canSpawnObstacle() {
+            if (obstacles.length === 0) return true;
+            
+            // Find the lowest (most recent) obstacle
+            const lowestObstacle = obstacles.reduce((lowest, current) => 
+                current.y > lowest.y ? current : lowest, obstacles[0]);
+            
+            // Basic vertical spacing check
+            return lowestObstacle.y > minObstacleSpacing;
+        }
+
+        function getValidSpawnLane() {
+            let availableLanes = [0, 1, 2];
+            
+            // Filter out lanes that would create impossible situations
+            availableLanes = availableLanes.filter(lane => {
+                // Check if this lane has enough spacing from existing obstacles
+                return canSpawnInLane(lane, -50);
+            });
+            
+            // If the last two obstacles were in different lanes,
+            // ensure there's at least one clear lane
+            if (lastSpawnedLanes[0] !== -1 && lastSpawnedLanes[1] !== -1 &&
+                lastSpawnedLanes[0] !== lastSpawnedLanes[1]) {
+                availableLanes = availableLanes.filter(lane => 
+                    !lastSpawnedLanes.includes(lane));
+            }
+            
+            // If no lanes are available, skip this spawn
+            if (availableLanes.length === 0) {
+                return -1;
+            }
+            
+            // Pick a random lane from available ones
+            return availableLanes[Math.floor(Math.random() * availableLanes.length)];
+        }
+        
+        function updateObstacles() {
+            // Remove off-screen obstacles first
+            obstacles = obstacles.filter(obstacle => obstacle.y <= canvas.height);
+            
+            // Update positions
+            obstacles.forEach(obstacle => {
+                obstacle.y += baseSpeed + (score / 1000); // Speed increases with score
+            });
+            
+            // Spawn new obstacles
+            if (Math.random() < spawnRate && canSpawnObstacle()) {
+                let lane = getValidSpawnLane();
+                
+                // Only spawn if we found a valid lane
+                if (lane !== -1) {
+                    obstacles.push({ 
+                        x: lane * laneWidth + 30, 
+                        y: -50, 
+                        width: 40, 
+                        height: 60 
+                    });
+                    
+                    // Update spawn history
+                    lastSpawnedLanes[0] = lastSpawnedLanes[1];
+                    lastSpawnedLanes[1] = lane;
+                    lastSpawnY = -50;
+                    
+                    // Adjust spawn rate based on current obstacle density
+                    spawnRate = Math.min(0.02 + (score / 10000), 0.035);
+                }
+            }
+            
+            // Check collisions
+            for (let obstacle of obstacles) {
+                if (checkCollision(car, obstacle)) {
+                    gameOver = true;
+                    break;
+                }
+            }
+            
+            // Update score
+            frameCount++;
+            if (frameCount % 60 === 0) { // Increment score every 60 frames
+                score += 10;
+                scoreElement.textContent = `Score: ${score}`;
+                // Gradually increase spacing requirements with speed
+                minObstacleSpacing = 180 + (score / 400);
+                minAdjacentSpacing = 100 + (score / 800);
+            }
+        }
+        
+        function drawGameOver() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Game Over!", canvas.width/2, canvas.height/2);
+            ctx.font = "20px Arial";
+            ctx.fillText(`Final Score: ${score}`, canvas.width/2, canvas.height/2 + 40);
+            ctx.fillText("Click Restart to play again", canvas.width/2, canvas.height/2 + 80);
+        }
+        
+        function drawPaused() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Paused", canvas.width/2, canvas.height/2);
+        }
+        
+        function updateGame() {
+            if (!isPaused) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawCar();
+                drawObstacles();
+                if (!gameOver) {
+                    updateObstacles();
+                } else {
+                    drawGameOver();
+                }
+            } else {
+                drawPaused();
+            }
+            requestAnimationFrame(updateGame);
+        }
+        
+        function restartGame() {
+            obstacles = [];
+            gameOver = false;
+            isPaused = false;
+            score = 0;
+            baseSpeed = 3;
+            spawnRate = 0.02;
+            frameCount = 0;
+            car.lane = 1;
+            car.x = car.lane * laneWidth + 30;
+            scoreElement.textContent = "Score: 0";
+            lastSpawnedLanes = [-1, -1];
+            lastSpawnY = 0;
+            minObstacleSpacing = 180;
+            minAdjacentSpacing = 100;
+        }
+        
+        function togglePause() {
+            if (!gameOver) {
+                isPaused = !isPaused;
+            }
+        }
+        
+        document.addEventListener("keydown", (event) => {
+            if (gameOver || isPaused) return;
+            
+            if (event.key === "ArrowLeft" && car.lane > 0) {
+                car.lane--;
+            } else if (event.key === "ArrowRight" && car.lane < 2) {
+                car.lane++;
+            } else if (event.key === "p") {
+                togglePause();
+            }
+            car.x = car.lane * laneWidth + 30;
+        });
+        
+        updateGame();
+    </script>
+</body>
+</html>
